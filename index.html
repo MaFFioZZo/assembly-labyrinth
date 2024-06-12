@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kurs-web</title>
+    <link rel="stylesheet" href="style.css">
+	<script type="text/javascript" src="JS.js"></script>
+</head>
+<body>
+	<div id="button-container" class="button-container"></div>
+    <script>
+		//запрос
+		let Http = new XMLHttpRequest();
+		Http.open("GET", api, false);
+		Http.send();
+		let json;
+		json = JSON.parse(Http.responseText);
+		
+		let buttons = new Array;
+		let buttonContainer = document.getElementById('button-container');
+		for (let i = 0; i < JSON.stringify(json.levels.length); i++)
+		{
+			buttons[i] = document.createElement('button');
+			buttons[i].textContent = JSON.stringify(json.levels[i]);
+			buttonContainer.appendChild(buttons[i]);
+			buttons[i].addEventListener('click',() =>
+			{
+				let params = new URLSearchParams();
+				params.append("level", buttons[i].textContent);
+				window.location.href = "game.html?" + params.toString();
+			})
+		}
+    </script>
+</body>
+</html>
