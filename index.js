@@ -2,7 +2,15 @@
 const commands = ['help', 'clear', 'version', 'levels', 'start'];
 
 //список уровней
-var levels = new Array();
+let levels = new Array();
+
+let commandHistory = new Array();
+let historyIndex = -1;
+
+var consoleDiv;
+var outputDiv;
+var inputContainer;
+var inputField;
 
 //вывод в консоль
 function printToConsole(text)
@@ -127,4 +135,69 @@ function startLevel(command)
 		printToConsole("incorrect level title")
 		executeCommand('start');
 	}
+}
+
+function funcButtons(inputField)
+{
+	inputField.addEventListener('keydown', function(event)
+	{
+		if (event.key == 'Enter')
+		{
+			let command = inputField.value;
+			commandHistory.push(command);
+			historyIndex = commandHistory.length;
+			printToConsole('> ' + command);
+			inputField.value = '';
+			executeCommand(command);
+			window.scrollTo(0, document.body.scrollHeight);
+		}
+		else if (event.key == 'Tab')
+		{
+			event.preventDefault();
+			autocompleteCommand();
+		}
+		else if (event.key == 'ArrowUp')
+		{
+			event.preventDefault();
+			if (historyIndex > 0)
+			{
+				historyIndex--;
+				inputField.value = commandHistory[historyIndex];
+			}
+		}
+		else if (event.key == 'ArrowDown')
+		{
+			event.preventDefault();
+			if (historyIndex < commandHistory.length - 1)
+			{
+				historyIndex++;
+				inputField.value = commandHistory[historyIndex];
+			}
+			else
+			{
+				inputField.value = '';
+				historyIndex = commandHistory.length;
+			}
+		}
+	});
+}
+
+function index()
+{
+	consoleDiv = document.getElementById('console');
+	outputDiv = document.getElementById('output');
+	inputContainer = document.querySelector('.input-container');
+	inputField = document.getElementById('input');
+	
+	//получение списка уровней при запуске страницы
+	getLevels(getHTTP(api));
+	
+	//фокус на поле ввода
+	let keepFocus = () => inputField.focus();
+	document.addEventListener('click', keepFocus);
+	
+	//обработка функциональных клавиш
+	funcButtons(inputField);
+	
+	printToConsole('Welcome to the Assembly Labyrinth! Type "help" to see available commands.');
 }
