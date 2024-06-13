@@ -3,34 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kurs-web</title>
-    <link rel="stylesheet" href="style.css">
-	<script type="text/javascript" src="JS.js"></script>
+    <title>Assembly Labyrinth</title>
+	<link rel="stylesheet" href="index.css">
+	<script type="text/javascript" src="index.js"></script>
 </head>
 <body>
-	<div id="button-container" class="button-container"></div>
+    <div id="console">
+        <div id="output"></div>
+        <div class="input-container">
+            <input type="text" id="input" autofocus>
+        </div>
+    </div>
     <script>
-		//запрос
-		let Http = new XMLHttpRequest();
-		Http.open("GET", api, false);
-		Http.send();
-		let json;
-		json = JSON.parse(Http.responseText);
+        let consoleDiv = document.getElementById('console');
+        let outputDiv = document.getElementById('output');
+        let inputContainer = document.querySelector('.input-container');
+        let inputField = document.getElementById('input');
 		
-		let buttons = new Array;
-		let buttonContainer = document.getElementById('button-container');
-		for (let i = 0; i < JSON.stringify(json.levels.length); i++)
+		//фокус на поле ввода
+		let keepFocus = () => inputField.focus();
+		//consoleDiv.addEventListener('click', keepFocus);
+		document.addEventListener('click', keepFocus);
+		
+        inputField.addEventListener('keydown', function(event)
 		{
-			buttons[i] = document.createElement('button');
-			buttons[i].textContent = JSON.stringify(json.levels[i]);
-			buttonContainer.appendChild(buttons[i]);
-			buttons[i].addEventListener('click',() =>
+            if (event.key === 'Enter')
 			{
-				let params = new URLSearchParams();
-				params.append("level", buttons[i].textContent);
-				window.location.href = "game.html?" + params.toString();
-			})
-		}
+                let command = inputField.value;
+                printToConsole('> ' + command);
+                inputField.value = '';
+                executeCommand(command);
+				window.scrollTo(0, document.body.scrollHeight);
+            }
+			else if (event.key === 'Tab')
+			{
+                event.preventDefault();
+                autocompleteCommand();
+            }
+        });
+		
+        printToConsole('Welcome to the Assembly Labyrinth! Type "help" to see available commands.');
     </script>
 </body>
 </html>
