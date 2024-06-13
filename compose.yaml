@@ -1,0 +1,9 @@
+version: '3.3'
+services:
+  assembly-front:
+    container_name: assembly-front
+    build:
+      context: .
+      target: final
+    ports:
+      - 80:80
