@@ -1,4 +1,4 @@
-const version = 'Version 1.0.4';
+const version = 'Version 1.0.5';
 
 //список команд
 const commands = ['help', 'about', 'levels', 'manual', 'reload', 'clear', 'start', 'version'];
