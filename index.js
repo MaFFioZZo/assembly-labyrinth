@@ -1,3 +1,5 @@
+const version = 'Version 1.0.3';
+
 //список команд
 const commands = ['help', 'clear', 'version', 'levels', 'start', 'reload'];
 
@@ -51,7 +53,7 @@ function executeCommand(command)
 			break;
 		case ('version'):
 			printToConsole('Assembly Labyrinth by FranChesKo and MaFFioZZo');
-			printToConsole('Version 1.0.1');
+			printToConsole(version);
 			break;
 		case ('start'):
 			printToConsole('Use: start <level>');
