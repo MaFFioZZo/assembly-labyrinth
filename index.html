@@ -15,37 +15,7 @@
         </div>
     </div>
     <script>
-        let consoleDiv = document.getElementById('console');
-        let outputDiv = document.getElementById('output');
-        let inputContainer = document.querySelector('.input-container');
-        let inputField = document.getElementById('input');
-		
-		//получение списка уровней при запуске страницы
-		getLevels(getHTTP(api));
-		
-		//фокус на поле ввода
-		let keepFocus = () => inputField.focus();
-		document.addEventListener('click', keepFocus);
-		
-		//обработка Enter && Tab
-        inputField.addEventListener('keydown', function(event)
-		{
-            if (event.key == 'Enter')
-			{
-                let command = inputField.value;
-                printToConsole('> ' + command);
-                inputField.value = '';
-                executeCommand(command);
-				window.scrollTo(0, document.body.scrollHeight);
-            }
-			else if (event.key == 'Tab')
-			{
-                event.preventDefault();
-                autocompleteCommand();
-            }
-        });
-		
-        printToConsole('Welcome to the Assembly Labyrinth! Type "help" to see available commands.');
+        index();
     </script>
 </body>
 </html>
