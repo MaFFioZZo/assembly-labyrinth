@@ -5,22 +5,26 @@ body
 	font-family: monospace;
 	padding: 20px;
 }
+
 #console
 {
 	padding: 10px;
 	height: device-height;
 	overflow-y: auto;
 }
+
 .input-container
 {
 	display: flex;
 	align-items: center;
 }
+
 .input-container::before
 {
 	content: '>';
 	margin-right: 5px;
 }
+
 #input
 {
 	width: 100%;
