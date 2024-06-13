@@ -52,8 +52,10 @@ input[type="text"]
 	background-color: #121212;
 	color: white;
 	border: none;
-	width: 99%;
+	shadow: none;
+	width: 97%;
 	text-transform: uppercase;
+	outline: none;
 }
 
 .arrow
@@ -65,14 +67,14 @@ input[type="text"]
 
 .arrow-up-in
 {
-	top: -40px; /* отступ от таблицы */
+	top: -60px; /* отступ от таблицы */
 	left: 55%; /* центрирование */
 	transform: translateX(-50%); /* поворот */
 }
 
 .arrow-down-in
 {
-	bottom: -40px;
+	bottom: -60px;
 	left: 45%;
 	transform: translateX(-50%) rotate(-180deg);
 }
@@ -80,27 +82,27 @@ input[type="text"]
 .arrow-right-in
 {
 	top: 45%;
-	right: -40px;
+	right: -60px;
 	transform: translateY(-50%) rotate(90deg);
 }
 
 .arrow-left-in
 {
 	top: 55%;
-	left: -40px;
+	left: -60px;
 	transform: translateY(-50%) rotate(-90deg);
 }
 
 .arrow-up-out
 {
-	top: -40px;
+	top: -60px;
 	left: 45%;
 	transform: translateX(-50%) rotate(180deg);
 }
 
 .arrow-down-out
 {
-	bottom: -40px;
+	bottom: -60px;
 	left: 55%;
 	transform: translateX(-50%);
 }
@@ -108,14 +110,14 @@ input[type="text"]
 .arrow-right-out
 {
 	top: 55%;
-	right: -40px;
+	right: -60px;
 	transform: translateY(-50%) rotate(-90deg);
 }
 
 .arrow-left-out
 {
 	top: 45%;
-	left: -40px;
+	left: -60px;
 	transform: translateY(-50%) rotate(90deg);
 }
 
@@ -173,4 +175,12 @@ button
 .top-table-container
 {
 	margin-bottom: 50px; /* отступ между верхней таблицей и центральными таблицами */
+}
+
+.input-arrow
+{
+	position: absolute;
+	left: -25px;
+	color: white;
+	font-size: 18px;
 }
