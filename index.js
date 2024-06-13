@@ -1,7 +1,7 @@
-const version = 'Version 1.0.5';
+const version = 'Version 1.0.6';
 
 //список команд
-const commands = ['help', 'about', 'levels', 'manual', 'reload', 'clear', 'start', 'version'];
+const commands = ['help', 'about', 'levels', 'manual', 'reload', 'clear', 'start', 'sudoedit', 'version'];
 
 //список уровней
 let levels = new Array();
@@ -45,6 +45,7 @@ function executeCommand(command)
 			printToConsole('manual - show manual for game');
 			printToConsole('reload - restart console');
 			printToConsole('start - start level');
+			printToConsole('sudoedit - edit levels');
 			printToConsole('version - show version');
 			break;
 		case ('about'):
@@ -70,7 +71,7 @@ function executeCommand(command)
 			printToConsole('You can start any of these levels by using command "start"');
 			break;
 		case ('manual'):
-			window.open("https://github.com/MaFFioZZo/assembly-labyrinth?tab=readme-ov-file#manual", "_blank");
+			window.open("https://github.com/MaFFioZZo/assembly-labyrinth?tab=readme-ov-file#manual");
 			break;
 		case ('reload'):
 			window.location.reload();
@@ -79,11 +80,13 @@ function executeCommand(command)
 			printToConsole('Use: start <level>');
 			printToConsole('Hint: type "levels" to see list of available levels');
 			break;
+		case ('sudoedit'):
+			window.open("https://code.franchesko.top/?folder=/data");
+			break;
 		case ('version'):
 			printToConsole('Assembly Labyrinth by FranChesKo and MaFFioZZo');
 			printToConsole(version);
 			printToConsole('—————————————————————————————————————————————————');
-			printToConsole('https://github.com/MaFFioZZo/assembly-labyrinth');
 			printToConsole('https://github.com/FranChesK0/assembly-labyrinth');
 			break;
 		case (''):
