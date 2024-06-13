@@ -220,10 +220,14 @@ function postHTTP(level, rightTables, vars, leftTables)
 		jsonPost.nodes[i] = new Object();
 		jsonPost.nodes[i].index = i;
 		jsonPost.nodes[i].code = new Array;
+		let a = 0;
 		for (let j = 0; j < rightTables[i].rows; j++)
 			if (rightTables[i].isActive)
 				if (rightTables[i].tableElement.children[0].children[0].children[j].children[0].children[0].value != '')
-					jsonPost.nodes[i].code[j] = rightTables[i].tableElement.children[0].children[0].children[j].children[0].children[0].value;
+				{
+					jsonPost.nodes[i].code[a] = rightTables[i].tableElement.children[0].children[0].children[j].children[0].children[0].value;
+					a++;
+				}
 	}
 	
 	//input
