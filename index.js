@@ -91,7 +91,7 @@ function autocompleteCommand()
 	
 	if (input.startsWith('start'))
 	{
-		if (matchingCommands[0] == 'start')
+		if (matchingCommands.indexOf('start') != -1)
 		{
 			matchingCommands = [];
 			matchingIndex = 0;
