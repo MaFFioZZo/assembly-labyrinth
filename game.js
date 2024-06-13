@@ -288,7 +288,7 @@ function postHTTP(level, rightTables, vars, leftTables)
 			let temp = JSON.stringify(jsonPost.out[a].values);
 			temp = temp.substring(1, temp.length - 1);
 			if (temp.length != 0)
-				setTableText(leftTables, i, 0, temp, ',', 1, '—');
+				setTableText(leftTables, i, 0, temp, ',', 1, '—  ');
 			a++;
 		}
 		
