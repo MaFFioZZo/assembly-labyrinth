@@ -490,16 +490,3 @@ function game()
 	let runButton = document.getElementById('Run');
 	runButton.addEventListener('click', () => postHTTP(level, rightTables, vars, leftTables));
 }
-
-function removePointers()
-{
-	let inputs = document.getElementsByTagName('input');
-	inputs.addEventListener('keydown', function(event)
-	{
-		if (event.type == 'click')
-		{
-			let pointers = document.getElementsByName('span');
-			pointers.remove();
-		}
-	});
-}
