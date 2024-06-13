@@ -210,7 +210,7 @@ class Table
 }
 
 // функция для установки текста в таблицу
-function setTableText(array, tableIndex, rowIndex, text, separator = '|', columnIndex = 0)
+function setTableText(array, tableIndex, rowIndex, text, separator = '|', columnIndex = 0, between = '')
 {
 	let texts = text.split(separator);
 	if (tableIndex >= 0 && tableIndex < array.length)
@@ -218,7 +218,7 @@ function setTableText(array, tableIndex, rowIndex, text, separator = '|', column
 		let c = 0;
 		for(let i=rowIndex;i<rowIndex+texts.length;i++)
 		{
-			array[tableIndex].setCellText(i, columnIndex, texts[c]);
+			array[tableIndex].setCellText(i, columnIndex, between + texts[c]);
 			c++;
 		}
 	}
@@ -229,6 +229,8 @@ function setTableText(array, tableIndex, rowIndex, text, separator = '|', column
 //post запрос
 function postHTTP(level, rightTables, vars, leftTables)
 {
+	//удаление указателей на всей странице
+	document.querySelectorAll('.input-arrow').forEach(arrow => arrow.remove());
 	let jsonPost = new Object();
 	jsonPost.nodes = new Array;
 	
@@ -285,7 +287,8 @@ function postHTTP(level, rightTables, vars, leftTables)
 		{
 			let temp = JSON.stringify(jsonPost.out[a].values);
 			temp = temp.substring(1, temp.length - 1);
-			setTableText(leftTables, i, 0, temp, ',', 1);
+			if (temp.length != 0)
+				setTableText(leftTables, i, 0, temp, ',', 1, '—');
 			a++;
 		}
 		
