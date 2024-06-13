@@ -1,3 +1,4 @@
+//класс - таблица
 class Table
 {
 	constructor(rows = 15, columns = 1, isActive = true, borderWidth = '5px', text = 'none', isWritable = false, topIn = false, topOut = false, rightIn = false, rightOut = false, bottomIn = false, bottomOut = false, leftIn = false, leftOut = false, textTop = true)
@@ -360,6 +361,7 @@ function makeRightContainer(vars)
 	return rightTables;
 }
 
+//лево
 function makeLeftContainer(vars)
 {
 	const leftTopContainer = document.getElementById('top-table-container');
@@ -414,6 +416,7 @@ function makeLeftContainer(vars)
 	return leftTables;
 }
 
+//main функция
 function game()
 {
 	let params = new URLSearchParams(window.location.search);
