@@ -162,7 +162,7 @@ function setTableText(array, tableIndex, rowIndex, text, separator = '|', column
 		for(let i=rowIndex;i<rowIndex+texts.length;i++)
 		{
 			array[tableIndex].setCellText(i, columnIndex, texts[c]);
-			c=c+1;
+			c++;
 		}
 	}
 	else
@@ -225,7 +225,7 @@ function postHTTP(level, rightTables, vars, leftTables)
 			let temp = JSON.stringify(jsonPost.out[a].values);
 			temp = temp.substring(1, temp.length - 1);
 			setTableText(leftTables, i, 0, temp, ',', 1);
-			a=a+1;
+			a++;
 		}
 		
 		if (JSON.stringify(jsonPost.check_status) == 'false')
@@ -382,17 +382,17 @@ function makeLeftContainer(vars)
 	{
 		leftTables[i] = new Table(vars.input[a][2].length, 1, true, '5px', vars.input[a][1]);
 		leftTables[i].render(centerTableContainer);
-		a=a+1;
+		a++;
 	}
 	
 	temp = leftTables.length;
-	a=0;
+	a = 0;
 	
 	//создание вывода
 	for (let i = temp; i < (+vars.expectedCount + temp); i++)
 	{
 		leftTables[i] = new Table(vars.expected[a][2].length, 2, true, '5px', vars.expected[a][1]);
-		a=a+1;
+		a++;
 		leftTables[i].render(centerTableContainer);
 	}
 	
@@ -401,7 +401,7 @@ function makeLeftContainer(vars)
 	for (let i = 1; i < vars.input.length + 1; i++)
 	{
 		setTableText(leftTables, i, 0, vars.input[a][2].toString(), ',');
-		a=a+1;
+		a++;
 	}
 	
 	//заполнение вывода
@@ -409,7 +409,21 @@ function makeLeftContainer(vars)
 	for (let i = 1 + vars.input.length; i < leftTables.length; i++)
 	{
 		setTableText(leftTables, i, 0, vars.expected[a][2].toString(), ',');
-		a=a+1;
+		a++;
 	}
 	return leftTables;
+}
+
+function game()
+{
+	let params = new URLSearchParams(window.location.search);
+	let level = params.get("level");
+	let json = getHTTP(level);
+	
+	let vars = createVariables(json);
+	let rightTables = makeRightContainer(vars);
+	let leftTables = makeLeftContainer(vars);
+	
+	let runButton = document.getElementById('Run');
+	runButton.addEventListener('click', () => postHTTP(level, rightTables, vars, leftTables));
 }
