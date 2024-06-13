@@ -64,6 +64,7 @@ function executeCommand(command)
 			getLevels(json);
 			printToConsole('List of levels:');
 			printLevels(levels);
+			printToConsole('You can start any of these levels by using command "start"');
 			break;
 		case (''):
 			printToConsole(' ');
