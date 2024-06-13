@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kurs-web</title>
-    <link rel="stylesheet" href="style.css">
-	<script type="text/javascript" src="JS.js"></script>
+    <title>Assembly Labyrinth</title>
+    <link rel="stylesheet" href="game.css">
+	<script type="text/javascript" src="game.js"></script>
 </head>
 <body>
     <div class="left-container">
@@ -14,161 +14,18 @@
         <div class="button-container">
             <button onclick="window.location.href = 'index.html'">Back</button>
             <button onclick="window.location.reload()">Reload</button>
-			<button onclick="postHTTP(level, rightTables, input, expected, leftTables)">Run</button>
+			<button onclick="postHTTP(level, rightTables, vars, leftTables)">Run</button>
         </div>
     </div>
     <div id="right-container" class="right-container"></div>
     <script>
 		let params = new URLSearchParams(window.location.search);
 		let level = params.get("level");
-		level = level.substring(1, level.length - 1);
-		//запрос
-		let Http = new XMLHttpRequest();
-		Http.open("GET", api + '/' + level, false);
-		Http.send();
-		let json;
-		json = JSON.parse(Http.responseText);
+		let json = getHTTP(level);
 		
-		//название
-		let title = JSON.stringify(json.title);
-		title = title.substring(1, title.length - 1);
-		
-		//описание
-		let description = JSON.stringify(json.description);
-		description = description.substring(1, description.length - 1);
-		
-		//ввод
-		let inputCount = JSON.stringify(json.in.length);
-		let input = new Array;
-		for(let i = 0; i < inputCount; i++)
-		{
-			input[i] = new Array;
-			input[i][0] = JSON.stringify(json.in[i].index);
-			input[i][1] = JSON.stringify(json.in[i].name);
-			input[i][1] = input[i][1].substring(1, input[i][1].length - 1);
-			let temp = JSON.stringify(json.in[i].values);
-			temp = temp.substring(1, temp.length - 1);
-			input[i][2] = temp.split(',').map(Number);
-		}
-		
-		//список ввода
-		let inputIndexes = new Array;
-		for (let i = 0; i < input.length; i++)
-			inputIndexes[i] = Number(input[i][0]);
-		
-		//вывод
-		let expectedCount = JSON.stringify(json.expected.length);
-		let expected = new Array;
-		for(let i = 0; i < expectedCount; i++)
-		{
-			expected[i] = new Array;
-			expected[i][0] = JSON.stringify(json.expected[i].index);
-			expected[i][1] = JSON.stringify(json.expected[i].name);
-			expected[i][1] = expected[i][1].substring(1, expected[i][1].length - 1);
-			let temp = JSON.stringify(json.expected[i].values);
-			temp = temp.substring(1, temp.length - 1);
-			expected[i][2] = temp.split(',').map(Number);
-		}
-		
-		//список вывода
-		let outputIndexes = new Array;
-		for (let i = 0; i < expected.length; i++)
-			outputIndexes[i] = Number(expected[i][0]);
-		
-		//layout: 0 - работает; 1 - не работает
-		let layoutCount = JSON.stringify(json.layout.length);
-		let layout = new Array;
-		for(let i = 0; i < layoutCount; i++)
-			layout[i] = JSON.stringify(json.layout[i].type);
-		
-		//право
-		let rightTables = new Array;
-		const rightContainer = document.getElementById('right-container');
-		for (let i = 0; i < layoutCount; i++)
-		{
-			if (layout[i] == 0)
-			{
-				let arrows = new Array(true,true,true,true);
-				//верх
-				if (i < 4)
-					arrows[0] = false;
-				//лево
-				if (i % 4 == 0)
-					arrows[3] = false;
-				//право
-				if (i == 3 || i == 7 || i == 11)
-					arrows[1] = false;
-				//низ
-				if (i > 7)
-					arrows[2] = false;
-				
-				let inputNum = inputIndexes.indexOf(i);
-				let outputNum = outputIndexes.indexOf(i);
-				if (inputNum != -1)
-					rightTables[i] = new Table(15, 1, true, '5px', input[inputNum][1], true, true, arrows[0], false, arrows[1], false, arrows[2], false, arrows[3]);
-				else if (outputNum != -1)
-					rightTables[i] = new Table(15, 1, true, '5px', expected[outputNum][1], true, false, arrows[0], false, arrows[1], false, true, false, arrows[3], false);
-				else
-				rightTables[i] = new Table(15, 1, true, '5px', 'none', true, false, arrows[0], false, arrows[1], false, arrows[2], false, arrows[3]);
-				rightTables[i].render(rightContainer);
-			}
-			else
-			{
-				rightTables[i] = new Table(15, 1, false, '5px');
-				rightTables[i].render(rightContainer);
-			}
-		}
-
-		//лево
-		const leftTopContainer = document.getElementById('top-table-container');
-		const centerTableContainer = document.getElementById('center-table-container');
-		
-		//название
-		let leftTables = new Array;
-		leftTables[0] = new Table(10, 1, true, '5px', title);
-		leftTables[0].render(leftTopContainer);
-		
-		//описание
-		setTableText(leftTables, 0, 0, description)
-		
-		let temp = leftTables.length;
-		
-		let a = 0;
-		
-		//создание ввода
-		for (let i = temp; i < (+inputCount + temp); i++)
-		{
-			leftTables[i] = new Table(input[a][2].length, 1, true, '5px', input[a][1]);
-			leftTables[i].render(centerTableContainer);
-			a=a+1;
-		}
-		
-		temp = leftTables.length;
-		a=0;
-		
-		//создание вывода
-		for (let i = temp; i < (+expectedCount + temp); i++)
-		{
-			leftTables[i] = new Table(expected[a][2].length, 2, true, '5px', expected[a][1]);
-			a=a+1;
-			leftTables[i].render(centerTableContainer);
-		}
-		
-		//заполнение ввода
-		a = 0;
-		for (let i = 1; i < input.length + 1; i++)
-		{
-			setTableText(leftTables, i, 0, input[a][2].toString(), ',');
-			a=a+1;
-		}
-		
-		//заполнение вывода
-		a = 0;
-		for (let i = 1 + input.length; i < leftTables.length; i++)
-		{
-			setTableText(leftTables, i, 0, expected[a][2].toString(), ',');
-			a=a+1;
-		}
+		let vars = createVariables(json);
+		let rightTables = makeRightContainer(vars);
+		let leftTables = makeLeftContainer(vars);
     </script>
 </body>
 </html>
