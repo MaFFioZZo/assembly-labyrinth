@@ -39,6 +39,7 @@ class Table
 					const input = document.createElement('input');
 					input.type = 'text';
 					cell.appendChild(input);
+					input.addEventListener('keydown', (event) =>{this.handleMoveKeys(event, table, i, j);});
 				}
 				cell.style.borderWidth = this.borderWidth;
 			}
@@ -150,6 +151,43 @@ class Table
 		}
 		else
 			console.error('Invalid row or column index');
+	}
+	
+	//перемещение по таблице стрелочками / с помощью Enter
+	handleMoveKeys(event, table, row, col)
+	{
+		const totalRows = table.rows.length;
+		const totalCols = table.rows[0].cells.length;
+		let nextInput;
+
+		switch (event.key)
+		{
+			case 'ArrowUp':
+				if (row > 0)
+					nextInput = table.rows[row - 1].cells[col].querySelector('input');
+				break;
+			case 'ArrowDown':
+				if (row < totalRows - 1)
+					nextInput = table.rows[row + 1].cells[col].querySelector('input');
+				break;
+			case 'ArrowLeft':
+				if (col > 0)
+					nextInput = table.rows[row].cells[col - 1].querySelector('input');
+				break;
+			case 'ArrowRight':
+				if (col < totalCols - 1)
+					nextInput = table.rows[row].cells[col + 1].querySelector('input');
+				break;
+			case 'Enter':
+				if (row < totalRows - 1)
+					nextInput = table.rows[row + 1].cells[col].querySelector('input');
+				break;
+		}
+
+		if (nextInput) {
+			nextInput.focus();
+			event.preventDefault();
+		}
 	}
 }
 
