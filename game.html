@@ -14,18 +14,12 @@
         <div class="button-container">
             <button onclick="window.location.href = 'index.html'">Back</button>
             <button onclick="window.location.reload()">Reload</button>
-			<button onclick="postHTTP(level, rightTables, vars, leftTables)">Run</button>
+			<button id="Run">Run</button>
         </div>
     </div>
     <div id="right-container" class="right-container"></div>
     <script>
-		let params = new URLSearchParams(window.location.search);
-		let level = params.get("level");
-		let json = getHTTP(level);
-		
-		let vars = createVariables(json);
-		let rightTables = makeRightContainer(vars);
-		let leftTables = makeLeftContainer(vars);
+		game();
     </script>
 </body>
 </html>
