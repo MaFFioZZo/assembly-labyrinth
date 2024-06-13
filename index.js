@@ -39,8 +39,9 @@ function executeCommand(command)
 			break;
 		case ('levels'):
 			let json = getHTTP(api);
+			getLevels(json);
 			printToConsole('List of levels:');
-			printLevels(json);
+			printLevels(levels);
 			break;
 		case (''):
 			printToConsole(' ');
@@ -57,10 +58,23 @@ function executeCommand(command)
 //TAB - автозаполнение команд
 function autocompleteCommand()
 {
-	let input = inputField.value;
-	let matchingCommands = commands.filter(cmd => cmd.startsWith(input));
-	if (matchingCommands.length == 1)
-		inputField.value = matchingCommands[0];
+	let matchingCommands;
+	let input = inputField.value.toString()
+	
+	if (input.startsWith('start'))
+	{
+		input = input.substring(6, input.length)
+		matchingCommands = levels.filter(cmd => cmd.startsWith(input));
+		if (matchingCommands.length == 1)
+			inputField.value = 'start ' + matchingCommands[0];
+	}
+	else
+	{
+		matchingCommands = commands.filter(cmd => cmd.startsWith(inputField.value));
+		if (matchingCommands.length == 1)
+			inputField.value = matchingCommands[0];
+	}
+	
 }
 
 //HTTP запрос
@@ -74,16 +88,22 @@ function getHTTP(api)
 	return json;
 }
 
-//вывод списка уровней
-function printLevels(json)
+//получение списка уровней
+function getLevels(json)
 {
 	for (let i = 0; i < JSON.stringify(json.levels.length); i++)
 	{
 		let temp = JSON.stringify(json.levels[i]);
 		temp = temp.substring(1, temp.length - 1);
 		levels[i] = temp;
-		printToConsole(temp);
 	}
+}
+
+//вывод списка уровней
+function printLevels(levels)
+{
+	for (let i = 0; i < levels.length; i++)
+		printToConsole(levels[i]);
 }
 
 //запуск уровня
