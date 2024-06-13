@@ -48,12 +48,16 @@ function executeCommand(command)
 			printToConsole('version - show version');
 			break;
 		case ('about'):
+			printToConsole('—————————————————————————————————————————————————————————————————————————————————————');
 			printToConsole('Assembly Labyrinth');
+			printToConsole('—————————————————————————————————————————————————————————————————————————————————————');
 			printToConsole('Your Path to Assembly Mastery');
+			printToConsole('—————————————————————————————————————————————————————————————————————————————————————');
 			printToConsole('Assembly Labyrinth is a web-app, where you can test your knowledge of basic assembly.');
 			printToConsole('- Learn about basic assembly');
 			printToConsole('- Test your knowledge');
 			printToConsole('- Add your own levels');
+			printToConsole('—————————————————————————————————————————————————————————————————————————————————————');
 			break;
 		case ('clear'):
 			outputDiv.innerHTML = '';
@@ -78,6 +82,7 @@ function executeCommand(command)
 		case ('version'):
 			printToConsole('Assembly Labyrinth by FranChesKo and MaFFioZZo');
 			printToConsole(version);
+			printToConsole('—————————————————————————————————————————————————');
 			printToConsole('https://github.com/MaFFioZZo/assembly-labyrinth');
 			printToConsole('https://github.com/FranChesK0/assembly-labyrinth');
 			break;
