@@ -39,7 +39,8 @@ class Table
 					const input = document.createElement('input');
 					input.type = 'text';
 					cell.appendChild(input);
-					input.addEventListener('keydown', (event) =>{this.handleMoveKeys(event, table, i, j);});
+					input.addEventListener('keydown', (event) => {this.handleMoveKeys(event, table, i, j);});
+					input.addEventListener('focus', (event) => {this.updatePointer(table, i);});
 				}
 				cell.style.borderWidth = this.borderWidth;
 			}
@@ -156,8 +157,8 @@ class Table
 	//перемещение по таблице стрелочками / с помощью Enter
 	handleMoveKeys(event, table, row, col)
 	{
-		const totalRows = table.rows.length;
-		const totalCols = table.rows[0].cells.length;
+		let totalRows = table.rows.length;
+		let totalCols = table.rows[0].cells.length;
 		let nextInput;
 
 		switch (event.key)
@@ -184,10 +185,27 @@ class Table
 				break;
 		}
 
-		if (nextInput) {
+		if (nextInput)
+		{
+			this.updatePointer(table, row, nextInput.parentElement.parentElement.rowIndex);
 			nextInput.focus();
 			event.preventDefault();
 		}
+	}
+	
+	//обновление указателя
+	updatePointer(table, currentRowIndex)
+	{
+		//удаление указателей на всей странице
+		document.querySelectorAll('.input-arrow').forEach(arrow => arrow.remove());
+		
+		//добавление указателя на текущей строке
+		let currentRow = table.rows[currentRowIndex];
+		let currentArrowCell = currentRow.cells[0];
+		let arrow = document.createElement('span');
+		arrow.classList.add('input-arrow');
+		arrow.textContent = '>';
+		currentArrowCell.prepend(arrow);
 	}
 }
 
@@ -471,4 +489,17 @@ function game()
 	
 	let runButton = document.getElementById('Run');
 	runButton.addEventListener('click', () => postHTTP(level, rightTables, vars, leftTables));
+}
+
+function removePointers()
+{
+	let inputs = document.getElementsByTagName('input');
+	inputs.addEventListener('keydown', function(event)
+	{
+		if (event.type == 'click')
+		{
+			let pointers = document.getElementsByName('span');
+			pointers.remove();
+		}
+	});
 }
