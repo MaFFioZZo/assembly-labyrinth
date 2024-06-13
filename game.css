@@ -35,6 +35,11 @@ table
 	height: 100%;
 }
 
+td
+{
+    padding: 0px;
+}
+
 .active
 {
 	border-color: white;
