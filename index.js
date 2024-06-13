@@ -1,11 +1,19 @@
 //список команд
-const commands = ['help', 'clear', 'version', 'levels', 'start'];
+const commands = ['help', 'clear', 'version', 'levels', 'start', 'reload'];
 
 //список уровней
 let levels = new Array();
 
+//история выполненных команд
 let commandHistory = new Array();
 let historyIndex = -1;
+
+//последняя нажатая клавиша
+let lastKeyPressed;
+
+//список команд для табуляции
+let matchingCommands = new Array();
+let matchingIndex = 0;
 
 var consoleDiv;
 var outputDiv;
@@ -31,11 +39,15 @@ function executeCommand(command)
 			printToConsole('clear - clear the output');
 			printToConsole('help - see this message');
 			printToConsole('levels - show available levels');
+			printToConsole('reload - restart console');
 			printToConsole('start - start level');
 			printToConsole('version - show version');
 			break;
 		case ('clear'):
 			outputDiv.innerHTML = '';
+			break;
+		case ('reload'):
+			window.location.reload();
 			break;
 		case ('version'):
 			printToConsole('Assembly Labyrinth by FranChesKo and MaFFioZZo');
@@ -66,21 +78,49 @@ function executeCommand(command)
 //TAB - автозаполнение команд
 function autocompleteCommand()
 {
-	let matchingCommands;
-	let input = inputField.value.toString()
+	let input = inputField.value;
+	
+	if (lastKeyPressed != 'Tab')
+	{
+		matchingCommands = [];
+		matchingIndex = 0;
+	}
 	
 	if (input.startsWith('start'))
 	{
-		input = input.substring(6, input.length)
-		matchingCommands = levels.filter(cmd => cmd.startsWith(input));
-		if (matchingCommands.length == 1)
-			inputField.value = 'start ' + matchingCommands[0];
+		if (matchingCommands[0] == 'start')
+		{
+			matchingCommands = [];
+			matchingIndex = 0;
+		}
+		if (matchingCommands.length == 0)
+		{
+			input = input.substring(6, input.length)
+			matchingCommands = levels.filter(cmd => cmd.startsWith(input));
+		}
+		if (matchingCommands.length > 0)
+		{
+			inputField.value = 'start ' + matchingCommands[matchingIndex];
+			if (matchingIndex == matchingCommands.length - 1)
+				matchingIndex = 0;
+			else
+				matchingIndex = matchingIndex + 1;
+		}
 	}
 	else
 	{
-		matchingCommands = commands.filter(cmd => cmd.startsWith(inputField.value));
-		if (matchingCommands.length == 1)
-			inputField.value = matchingCommands[0];
+		if (matchingCommands.length == 0)
+			matchingCommands = commands.filter(cmd => cmd.startsWith(inputField.value));
+		if (matchingCommands.length > 0)
+		{
+			inputField.value = matchingCommands[matchingIndex];
+			if (matchingIndex == matchingCommands.length - 1)
+				matchingIndex = 0;
+			else
+				matchingIndex = matchingIndex + 1;
+		}
+		else if (matchingCommands.length > 1)
+			printToConsole('Possible commands: ' + matchingCommands.join(', '));
 	}
 	
 }
@@ -111,7 +151,7 @@ function getLevels(json)
 function printLevels(levels)
 {
 	for (let i = 0; i < levels.length; i++)
-		printToConsole(levels[i]);
+		printToConsole('- ' + levels[i]);
 }
 
 //запуск уровня
@@ -137,6 +177,7 @@ function startLevel(command)
 	}
 }
 
+//обработка ввода в консоль
 function funcButtons(inputField)
 {
 	inputField.addEventListener('keydown', function(event)
@@ -149,6 +190,8 @@ function funcButtons(inputField)
 			printToConsole('> ' + command);
 			inputField.value = '';
 			executeCommand(command);
+			matchingCommands = [];
+            matchingIndex = 0;
 			window.scrollTo(0, document.body.scrollHeight);
 		}
 		else if (event.key == 'Tab')
@@ -179,9 +222,11 @@ function funcButtons(inputField)
 				historyIndex = commandHistory.length;
 			}
 		}
+		lastKeyPressed = event.key;
 	});
 }
 
+//main функция
 function index()
 {
 	consoleDiv = document.getElementById('console');
