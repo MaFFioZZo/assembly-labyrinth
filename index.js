@@ -1,7 +1,7 @@
-const version = 'Version 1.0.3';
+const version = 'Version 1.0.4';
 
 //список команд
-const commands = ['help', 'clear', 'version', 'levels', 'start', 'reload'];
+const commands = ['help', 'about', 'levels', 'manual', 'reload', 'clear', 'start', 'version'];
 
 //список уровней
 let levels = new Array();
@@ -38,26 +38,25 @@ function executeCommand(command)
 	{
 		case ('help'):
 			printToConsole('Available commands:');
-			printToConsole('clear - clear the output');
 			printToConsole('help - see this message');
+			printToConsole('about - show description of this app');
+			printToConsole('clear - clear the output');
 			printToConsole('levels - show available levels');
+			printToConsole('manual - show manual for game');
 			printToConsole('reload - restart console');
 			printToConsole('start - start level');
 			printToConsole('version - show version');
 			break;
+		case ('about'):
+			printToConsole('Assembly Labyrinth');
+			printToConsole('Your Path to Assembly Mastery');
+			printToConsole('Assembly Labyrinth is a web-app, where you can test your knowledge of basic assembly.');
+			printToConsole('- Learn about basic assembly');
+			printToConsole('- Test your knowledge');
+			printToConsole('- Add your own levels');
+			break;
 		case ('clear'):
 			outputDiv.innerHTML = '';
-			break;
-		case ('reload'):
-			window.location.reload();
-			break;
-		case ('version'):
-			printToConsole('Assembly Labyrinth by FranChesKo and MaFFioZZo');
-			printToConsole(version);
-			break;
-		case ('start'):
-			printToConsole('Use: start <level>');
-			printToConsole('Hint: type "levels" to see list of available levels');
 			break;
 		case ('levels'):
 			let json = getHTTP(api);
@@ -65,6 +64,22 @@ function executeCommand(command)
 			printToConsole('List of levels:');
 			printLevels(levels);
 			printToConsole('You can start any of these levels by using command "start"');
+			break;
+		case ('manual'):
+			window.open("https://github.com/MaFFioZZo/assembly-labyrinth?tab=readme-ov-file#manual", "_blank");
+			break;
+		case ('reload'):
+			window.location.reload();
+			break;
+		case ('start'):
+			printToConsole('Use: start <level>');
+			printToConsole('Hint: type "levels" to see list of available levels');
+			break;
+		case ('version'):
+			printToConsole('Assembly Labyrinth by FranChesKo and MaFFioZZo');
+			printToConsole(version);
+			printToConsole('https://github.com/MaFFioZZo/assembly-labyrinth');
+			printToConsole('https://github.com/FranChesK0/assembly-labyrinth');
 			break;
 		case (''):
 			printToConsole(' ');
